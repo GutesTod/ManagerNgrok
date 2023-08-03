@@ -3,7 +3,7 @@ import requests
 from aiogram import Dispatcher, types
 
 async def start_bot(msg: types.Message):
-    if msg.from_user.id == 5481809260:
+    if msg.from_user.id == int(os.getenv("ADMIN_ID")):
         start_kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
         pay_sub = types.KeyboardButton(text="Показать туннели")
         start_kb.row(pay_sub)
@@ -12,7 +12,7 @@ async def start_bot(msg: types.Message):
         await msg.answer(text="Доступ запрещён!!")
 
 async def get_tunnels(msg: types.Message):
-    if msg.from_user.id == 5481809260:
+    if msg.from_user.id == int(os.getenv("ADMIN_ID")):
         if os.getenv("API_NGROK"):
             headers = {
                 'Authorization': f'Bearer {os.getenv("API_NGROK")}',
