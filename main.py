@@ -4,6 +4,7 @@ import logging
 
 from aiogram import Bot, Dispatcher
 from aiogram.types import BotCommand
+from handlers import register_handlers
 bot = Bot(token=os.getenv("API_TOKEN"))
 dp = Dispatcher(bot=bot)
 
