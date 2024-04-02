@@ -3,8 +3,11 @@ import asyncio
 import logging
 
 from aiogram import Bot, Dispatcher
-from aiogram.types import BotCommand
-from handlers import register_handlers
+from handlers import handler_router
+from dotenv import load_dotenv
+
+load_dotenv()
+
 bot = Bot(token=os.getenv("API_TOKEN"))
 dp = Dispatcher(bot=bot)
 
@@ -13,8 +16,8 @@ async def main_telegram():
         level=logging.INFO,
         format="%(asctime)s - %(levelname)s - %(name)s - %(message)s"
     )
-    await register_handlers(dp)
-    await dp.start_polling()
+    dp.include_router(handler_router)
+    await dp.start_polling(bot)
 
 if __name__ == '__main__':
     asyncio.run(main_telegram())

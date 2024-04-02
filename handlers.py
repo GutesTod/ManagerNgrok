@@ -1,7 +1,15 @@
 import os
 import requests
-from aiogram import Dispatcher, types
+from aiogram import Router, types, F
+from dotenv import load_dotenv
 
+load_dotenv()
+
+handler_router = Router()
+
+@handler_router.message(
+    F.text == '/start'
+)
 async def start_bot(msg: types.Message):
     if msg.from_user.id == int(os.getenv("ADMIN_ID")):
         start_kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -11,6 +19,10 @@ async def start_bot(msg: types.Message):
     else:
         await msg.answer(text="Доступ запрещён!!")
 
+
+@handler_router.message(
+    F.text == "Показать туннели"
+)
 async def get_tunnels(msg: types.Message):
     if msg.from_user.id == int(os.getenv("ADMIN_ID")):
         if os.getenv("API_NGROK"):
@@ -28,7 +40,3 @@ async def get_tunnels(msg: types.Message):
             await msg.answer("Отсуствует API для Ngrok!")
     else:
         await msg.answer(text="Доступ запрещён!!")
-
-async def register_handlers(dp: Dispatcher):
-    dp.register_message_handler(start_bot, commands='start')
-    dp.register_message_handler(get_tunnels, lambda msg: msg.text == 'Показать туннели')
